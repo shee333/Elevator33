@@ -1,19 +1,18 @@
 package no.vestlandetmc.elevator;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import no.vestlandetmc.elevator.Listener.ElevatorListener;
 import no.vestlandetmc.elevator.Listener.TeleporterListener;
 import no.vestlandetmc.elevator.commands.ElevatorCommand;
-import no.vestlandetmc.elevator.commands.TabCompleteArgs;
 import no.vestlandetmc.elevator.commands.TeleporterCommand;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.MessageHandler;
+import no.vestlandetmc.elevator.handler.Permissions;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
-import no.vestlandetmc.elevator.handler.VersionHandler;
 import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,15 +25,12 @@ public class ElevatorPlugin extends JavaPlugin {
 
 	@Getter
 	private static ElevatorPlugin plugin;
-	@Getter
-	private static VersionHandler versionHandler;
 
 	private FileConfiguration data;
 
 	@Override
 	public void onEnable() {
 		plugin = this;
-		versionHandler = new VersionHandler();
 
 		MessageHandler.sendConsole("&b___________ __                       __                ");
 		MessageHandler.sendConsole("&b\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
@@ -43,14 +39,15 @@ public class ElevatorPlugin extends JavaPlugin {
 		MessageHandler.sendConsole("&b/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
 		MessageHandler.sendConsole("&b        \\/           \\/           \\/                   ");
 		MessageHandler.sendConsole("");
-		MessageHandler.sendConsole("&bElevator v" + getDescription().getVersion());
+		MessageHandler.sendConsole("&bElevator v" + getPluginMeta().getVersion());
 		MessageHandler.sendConsole("&bRunning on " + getServer().getName());
-		MessageHandler.sendConsole("&bAuthor: " + getDescription().getAuthors().toString().replace("[", "").replace("]", "").replace(",", " and"));
+		MessageHandler.sendConsole("&bAuthor: Baktus_79");
 		MessageHandler.sendConsole("&8&n_______________________________________________________");
 		MessageHandler.sendConsole("");
 
 		Config.initialize();
 		createDatafile();
+		Permissions.register();
 
 		TeleporterData.createSection();
 		HookManager.initialize();
@@ -58,18 +55,27 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
 		this.getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
-		this.getCommand("elevator").setExecutor(new ElevatorCommand());
-		this.getCommand("teleporter").setExecutor(new TeleporterCommand());
-		this.getCommand("teleporter").setTabCompleter(new TabCompleteArgs());
 
-		new UpdateNotification(67723) {
+		this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+			commands.registrar().register(
+					"elevator",
+					"Shows plugin help and reload options.",
+					new ElevatorCommand());
+
+			commands.registrar().register(
+					"teleporter",
+					"Manage teleporters.",
+					new TeleporterCommand());
+		});
+
+		new UpdateNotification("blockelevator") {
 
 			@Override
 			public void onUpdateAvailable() {
-				getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "-----------------------");
-				getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[Elevator] Version " + getLatestVersion() + " is now available!");
-				getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[Elevator] Download the update at https://www.spigotmc.org/resources/" + getProjectId());
-				getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "-----------------------");
+				MessageHandler.sendConsole("&7-----------------------");
+				MessageHandler.sendConsole("&7[Elevator] Version " + getLatestVersion() + " is now available!");
+				MessageHandler.sendConsole("&7[Elevator] Download the update at https://modrinth.com/plugin/" + getProjectSlug());
+				MessageHandler.sendConsole("&7-----------------------");
 			}
 		}.runTaskAsynchronously(this);
 

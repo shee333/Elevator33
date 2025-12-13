@@ -1,7 +1,6 @@
-package no.vestlandetmc.elevator;
+package no.vestlandetmc.elevator.handler;
 
 import no.vestlandetmc.elevator.config.Config;
-import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.hooks.VanishManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -74,6 +73,6 @@ public class Mechanics {
 
 	public static void teleport(Player player, Location tpCoordinate) {
 		player.teleport(tpCoordinate);
-		player.playSound(player.getLocation(), "minecraft:" + Config.TP_SOUND, 1.0F, 0.7F);
+		player.playSound(player.getLocation(), "minecraft:" + Config.ELEVATOR_SOUND, 1.0F, 0.7F);
 	}
 }

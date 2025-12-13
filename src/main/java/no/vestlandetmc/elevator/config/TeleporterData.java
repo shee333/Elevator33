@@ -82,7 +82,7 @@ public class TeleporterData {
 				final double x = Math.cos(a) * radius;
 				final double z = Math.sin(a) * radius;
 				final Location loc = player.getLocation().add(x, y, z);
-				final Particle particle = ElevatorPlugin.getVersionHandler().getTeleporterParticle();
+				final Particle particle = Particle.DUST;
 				player.getWorld().spawnParticle(particle, loc, 0, 0, 1, 0, options);
 			}
 		}

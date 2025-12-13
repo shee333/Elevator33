@@ -1,0 +1,27 @@
+name: Elevator
+version: '${version}'
+main: no.vestlandetmc.elevator.ElevatorPlugin
+api-version: '1.21'
+dependencies:
+  server:
+    GriefPrevention:
+      load: BEFORE
+      required: false
+    GriefDefender:
+      load: BEFORE
+      required: false
+    WorldGuard:
+      load: BEFORE
+      required: false
+    CMI:
+      load: BEFORE
+      required: false
+    Essentials:
+      load: BEFORE
+      required: false
+    PremiumVanish:
+      load: BEFORE
+      required: false
+    SuperVanish:
+      load: BEFORE
+      required: false

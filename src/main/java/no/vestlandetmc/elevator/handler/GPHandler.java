@@ -1,12 +1,15 @@
 package no.vestlandetmc.elevator.handler;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import no.vestlandetmc.elevator.ElevatorPlugin;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class GPHandler {
 
@@ -18,7 +21,7 @@ public class GPHandler {
 			return true;
 		}
 
-		final String accessDenied = claim.allowAccess(player);
+		final @Nullable Supplier<String> accessDenied = claim.checkPermission(player, ClaimPermission.Access, null);
 		if (accessDenied != null) {
 			if (!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
 				MessageHandler.sendMessage(player, "&c" + accessDenied);
@@ -39,20 +42,15 @@ public class GPHandler {
 
 	}
 
-	public static boolean haveBuildTrust(Player player, Location loc, Material material) {
-		if (ElevatorPlugin.getPlugin().getServer().getPluginManager().getPlugin("GriefPrevention") == null) {
-			return false;
-		}
-
+	public static boolean haveBuildTrust(Player player, Location loc) {
 		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
 
 		if (claim == null) {
 			return true;
 		}
 
-		final String accessDenied = claim.allowBuild(player, material);
+		final @Nullable Supplier<String> accessDenied = claim.checkPermission(player, ClaimPermission.Build, null);
 		return accessDenied == null;
-
 	}
 
 }

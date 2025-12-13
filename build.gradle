@@ -1,39 +1,35 @@
 plugins {
     id 'java'
-    id 'io.freefair.lombok' version '8.7.1'
-    id "io.github.goooler.shadow" version '8.1.8'
+    id 'io.freefair.lombok' version '9.1.0'
+    id "com.gradleup.shadow" version '9.3.0'
 }
 
 group = 'no.vestlandetmc'
-version = '3.0.8'
+version = '3.1.0'
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://repo.glaremasters.me/repository/bloodshot/' }
-    maven { url 'https://maven.enginehub.org/repo/' }
-    maven { url 'https://repo.essentialsx.net/releases/' }
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://repo.glaremasters.me/repository/bloodshot/' }
+    maven { url = 'https://maven.enginehub.org/repo/' }
+    maven { url = 'https://repo.essentialsx.net/releases/' }
 }
 
 dependencies {
-    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-
-    compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
-    compileOnly 'com.github.GriefPrevention:GriefPrevention:16.18.4'
-    compileOnly 'com.griefdefender:api:2.1.0-SNAPSHOT'
-    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.10'
-
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    compileOnly 'com.github.GriefPrevention:GriefPrevention:16.18.5'
+    compileOnly 'com.griefdefender:api:2.1.1-SNAPSHOT'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.14'
     compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.9.0-4'
-    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
+    compileOnly 'net.essentialsx:EssentialsX:2.21.2'
+    compileOnly 'com.github.Zrips:CMI-API:9.7.14.3'
 
-    implementation 'org.bstats:bstats-bukkit:3.0.2'
-    implementation 'org.jetbrains:annotations:24.1.0'
+    implementation 'org.bstats:bstats-bukkit:3.1.0'
 }
 
 shadowJar {
     relocate 'org.bstats', 'no.vestlandetmc.elevator.bstats'
-    relocate 'org.jetbrains', 'no.vestlandetmc.elevator.annotations'
     archiveFileName.set('Elevator.jar')
 }
 
@@ -62,8 +58,8 @@ tasks.withType(JavaCompile).configureEach {
 processResources {
     def props = [version: version]
     inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
+    filteringCharset = 'UTF-8'
+    filesMatching('paper-plugin.yml') {
         expand props
     }
 }

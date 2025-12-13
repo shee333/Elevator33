@@ -1,68 +1,61 @@
 package no.vestlandetmc.elevator.commands;
 
-import no.vestlandetmc.elevator.ElevatorPlugin;
-import no.vestlandetmc.elevator.config.Config;
-import no.vestlandetmc.elevator.handler.MessageHandler;
-import no.vestlandetmc.elevator.handler.UpdateNotification;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import no.vestlandetmc.elevator.commands.subcommands.ElevatorHelp;
+import no.vestlandetmc.elevator.commands.subcommands.ElevatorReload;
+import no.vestlandetmc.elevator.commands.subcommands.SubCommand;
+import no.vestlandetmc.elevator.handler.Permissions;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
-public class ElevatorCommand implements CommandExecutor {
+import java.util.*;
+
+public class ElevatorCommand implements BasicCommand {
+
+	private final Map<String, SubCommand> subcommands = new HashMap<>();
+
+	public ElevatorCommand() {
+		register(new ElevatorHelp());
+		register(new ElevatorReload());
+	}
+
+	private void register(SubCommand subCommand) {
+		subcommands.put(subCommand.getName().toLowerCase(), subCommand);
+	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public void execute(@NonNull CommandSourceStack commandSourceStack, String[] args) {
+		if (args.length == 0) args = new String[]{"help"};
+		String label = args[0].toLowerCase();
+		SubCommand sub = subcommands.get(label);
+
+		if (sub != null) {
+			sub.execute(commandSourceStack.getSender(), Arrays.copyOfRange(args, 1, args.length));
+		}
+	}
+
+	@Override
+	public @NonNull Collection<String> suggest(@NonNull CommandSourceStack commandSourceStack, String @NonNull [] args) {
 		if (args.length == 0) {
-			info(sender);
-			return true;
-		} else if (args[0].equals("reload")) {
-			ElevatorPlugin.getPlugin().reload();
-			if (sender instanceof Player) {
-				if (!sender.hasPermission("elevator.admin")) {
-					MessageHandler.sendMessage((Player) sender, Config.ML_LOCALE_PERMISSION);
-					return true;
-				}
-				MessageHandler.sendMessage((Player) sender, "&3[Elevator] The config has been reloaded");
-			}
-			MessageHandler.sendConsole("&3[Elevator] The config has been reloaded");
-			return true;
-		}
-
-		info(sender);
-		return true;
-	}
-
-	private void info(CommandSender sender) {
-		if (!(sender instanceof Player)) {
-			MessageHandler.sendConsole("&3---------------------------------");
-			MessageHandler.sendConsole("&bElevator is running version: &3v" + UpdateNotification.getCurrentVersion());
-			if (UpdateNotification.isUpdateAvailable()) {
-				MessageHandler.sendConsole("&aUpdate is available! New version is: &2" + UpdateNotification.getLatestVersion());
-				MessageHandler.sendConsole("&aGet the new update at https://www.spigotmc.org/resources/" + UpdateNotification.getProjectId());
-			} else {
-				MessageHandler.sendConsole("&aYou are running the latest version!");
-			}
-
-			MessageHandler.sendConsole("&bRun &3/elevator reload &bto reload the plugin.");
-			MessageHandler.sendConsole("&3---------------------------------");
+			return subcommands.keySet().stream().toList();
+		} else if (args.length == 1) {
+			return subcommands.keySet().stream()
+					.filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
+					.toList();
 		} else {
-			if (!sender.hasPermission("elevator.admin")) {
-				MessageHandler.sendMessage((Player) sender, Config.ML_LOCALE_PERMISSION);
-				return;
+			SubCommand sub = subcommands.get(args[0].toLowerCase());
+			if (sub != null) {
+				String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+				return sub.suggest(commandSourceStack.getSender(), subArgs);
 			}
-			MessageHandler.sendMessage((Player) sender, "&3---------------------------------");
-			MessageHandler.sendMessage((Player) sender, "&bElevator is running version: &3v" + UpdateNotification.getCurrentVersion());
-			if (UpdateNotification.isUpdateAvailable()) {
-				MessageHandler.sendMessage((Player) sender, "&aUpdate is available! New version is: &2v" + UpdateNotification.getLatestVersion());
-				MessageHandler.sendMessage((Player) sender, "&aGet the new update at https://www.spigotmc.org/resources/" + UpdateNotification.getProjectId());
-			} else {
-				MessageHandler.sendMessage((Player) sender, "&aYou are running the latest version!");
-			}
-
-			MessageHandler.sendMessage((Player) sender, "&bRun &3/elevator reload &bto reload the plugin.");
-			MessageHandler.sendMessage((Player) sender, "&3---------------------------------");
 		}
+
+		return Collections.emptyList();
 	}
 
+	@Override
+	public @Nullable String permission() {
+		return Permissions.ADMIN.getName();
+	}
 }

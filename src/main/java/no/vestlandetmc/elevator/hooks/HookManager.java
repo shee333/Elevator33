@@ -15,7 +15,7 @@ public class HookManager {
 
 	public static void initialize() {
 		final ElevatorPlugin plugin = ElevatorPlugin.getPlugin();
-		final String[] vanishPlugins = {
+		final String[] hooks = {
 				"GriefDefender",
 				"GriefPrevention",
 				"WorldGuard",
@@ -25,15 +25,15 @@ public class HookManager {
 				"SuperVanish"
 		};
 
-		for (String vanish : vanishPlugins) {
-			if (plugin.getServer().getPluginManager().getPlugin(vanish) != null) {
-				switch (vanish) {
+		for (String hook : hooks) {
+			if (plugin.getServer().getPluginManager().getPlugin(hook) != null) {
+				switch (hook) {
 					case "GriefDefender" -> griefDefenderLoaded = true;
 					case "GriefPrevention" -> griefPreventionLoaded = true;
 					case "WorldGuard" -> worldGuardLoaded = true;
 				}
 
-				MessageHandler.sendConsole("&7Successfully hooked into &b" + vanish);
+				MessageHandler.sendConsole("&7Successfully hooked into &b" + hook);
 			}
 		}
 	}

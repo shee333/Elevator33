@@ -43,10 +43,6 @@ public class GDHandler {
 	}
 
 	public static boolean haveBuildTrust(Player player, Location loc) {
-		if (ElevatorPlugin.getPlugin().getServer().getPluginManager().getPlugin("GriefDefender") == null) {
-			return false;
-		}
-
 		final Vector3i vector = Vector3i.from(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		final Core gd = GriefDefender.getCore();
 		final Claim claim = gd.getClaimManager(loc.getWorld().getUID()).getClaimAt(vector);

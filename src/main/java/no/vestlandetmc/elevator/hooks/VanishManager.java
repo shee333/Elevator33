@@ -25,7 +25,7 @@ public class VanishManager {
 
 		if (plugin.getServer().getPluginManager().getPlugin("PremiumVanish") != null ||
 				plugin.getServer().getPluginManager().getPlugin("SuperVanish") != null) {
-			if (VanishAPI.isInvisible(player)) return true;
+			return VanishAPI.isInvisible(player);
 		}
 
 		return false;

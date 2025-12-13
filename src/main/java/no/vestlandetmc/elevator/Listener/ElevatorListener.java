@@ -1,6 +1,5 @@
 package no.vestlandetmc.elevator.Listener;
 
-import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.*;
 import no.vestlandetmc.elevator.hooks.HookManager;
@@ -15,24 +14,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+@SuppressWarnings("deprecation")
 public class ElevatorListener implements Listener {
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
-		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
-			if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) {
-				return;
-			}
-
-			if (!Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.ELEVATOR_BLOCK_TYPE)) {
-				return;
-			}
-
+		if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
+		if (e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
+			if (!Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.ELEVATOR_BLOCK_TYPE)) return;
 			final Location tpLocation = Mechanics.getElevatorLocationUp(e.getPlayer());
 
 			if (tpLocation != null) {
-				if (!e.getPlayer().hasPermission("elevator.use")) {
+				if (!e.getPlayer().hasPermission(Permissions.ELEVATOR_USE)) {
 					return;
 				}
 
@@ -42,15 +35,12 @@ public class ElevatorListener implements Listener {
 					}
 				}
 
-				if (HookManager.isGriefPreventionLoaded() && Config.GRIEFPREVENTION_HOOK) {
-					if (!GPHandler.haveTrust(e.getPlayer())) return;
-				}
-				if (HookManager.isWorldGuardLoaded() && Config.WORLDGUARD_HOOK) {
-					if (!WGHandler.haveTrust(e.getPlayer())) return;
-				}
-				if (HookManager.isGriefDefenderLoaded() && Config.GRIEFDEFENDER_HOOK) {
-					if (!GDHandler.haveTrust(e.getPlayer())) return;
-				}
+				if (HookManager.isGriefPreventionLoaded() && Config.GRIEFPREVENTION_HOOK && !GPHandler.haveTrust(e.getPlayer()))
+					return;
+				if (HookManager.isWorldGuardLoaded() && Config.WORLDGUARD_HOOK && !WGHandler.haveTrust(e.getPlayer()))
+					return;
+				if (HookManager.isGriefDefenderLoaded() && Config.GRIEFDEFENDER_HOOK && !GDHandler.haveTrust(e.getPlayer()))
+					return;
 
 				Mechanics.setParticles(e.getPlayer());
 				Mechanics.teleport(e.getPlayer(), tpLocation);
@@ -73,7 +63,7 @@ public class ElevatorListener implements Listener {
 			final Location tpLocation = Mechanics.getElevatorLocationDown(e.getPlayer());
 
 			if (tpLocation != null) {
-				if (!e.getPlayer().hasPermission("elevator.use")) {
+				if (!e.getPlayer().hasPermission(Permissions.ELEVATOR_USE)) {
 					return;
 				}
 				if (Config.COOLDOWN_ENABLED) {
@@ -105,7 +95,7 @@ public class ElevatorListener implements Listener {
 
 		if (blockExistClose(e)) {
 			if (e.getBlockPlaced().getType() == Config.ELEVATOR_BLOCK_TYPE) {
-				if (!e.getPlayer().hasPermission("elevator.use")) {
+				if (!e.getPlayer().hasPermission(Permissions.ELEVATOR_USE)) {
 					return;
 				}
 				for (double y = 50.0D; y > -51.0D; y--) {
@@ -131,7 +121,7 @@ public class ElevatorListener implements Listener {
 				MessageHandler.sendMessage(player, "&a------------------------------------");
 				MessageHandler.sendMessage(player, "&aElevator is outdated. Update is available!");
 				MessageHandler.sendMessage(player, "&aYour version is &a&l " + UpdateNotification.getCurrentVersion() + " &aand can be updated to version &a&l" + UpdateNotification.getLatestVersion());
-				MessageHandler.sendMessage(player, "&aGet the new update at https://www.spigotmc.org/resources/" + UpdateNotification.getProjectId());
+				MessageHandler.sendMessage(player, "&aGet the new update at https://modrinth.com/plugin/" + UpdateNotification.getProjectSlug());
 				MessageHandler.sendMessage(player, "&a------------------------------------");
 			}
 		}

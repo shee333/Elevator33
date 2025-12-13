@@ -123,71 +123,7 @@ public class Config extends ConfigHandler {
 		ML_LOCALE_PERMISSION = getString("MiscellaneousLocale.Permission");
 		BLOCK_DISTANCE = getInt("Elevator.BlockDistance");
 
-		boolean saveFile = false;
-
-		//Cleanup old path in config file
-		if (contains("ElevatorUp")) {
-			set("ElevatorUp", null);
-			saveFile = true;
-		}
-
-		if (contains("ElevatorDown")) {
-			set("ElevatorDown", null);
-			saveFile = true;
-		}
-
-		if (contains("ElevatorDanger")) {
-			set("ElevatorDanger", null);
-			saveFile = true;
-		}
-
-		if (contains("ElevatorActivated")) {
-			set("ElevatorActivated", null);
-			saveFile = true;
-		}
-
-		if (contains("ElevatorCooldown")) {
-			set("ElevatorCooldown", null);
-			saveFile = true;
-		}
-
-		if (contains("BlockType")) {
-			set("BlockType", null);
-			saveFile = true;
-		}
-
-		if (contains("EnableParticle")) {
-			set("EnableParticle", null);
-			saveFile = true;
-		}
-
-		if (contains("ParticleType")) {
-			set("ParticleType", null);
-			saveFile = true;
-		}
-
-		if (contains("ParticleCount")) {
-			set("ParticleCount", null);
-			saveFile = true;
-		}
-
-		if (contains("UsageSound")) {
-			set("UsageSound", null);
-			saveFile = true;
-		}
-
-		if (contains("ActivateSound")) {
-			set("ActivateSound", null);
-			saveFile = true;
-		}
-
-		if (saveFile) {
-			saveConfig();
-			MessageHandler.sendConsole("&7[Elevator] &6The config file has been cleaned. Please check the config file for changes.");
-		}
-
 		sendInfo();
-
 	}
 
 	public static void initialize() {

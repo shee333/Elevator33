@@ -1,11 +1,11 @@
 package no.vestlandetmc.elevator.Listener;
 
-import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.*;
 import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,22 +32,13 @@ public class TeleporterListener implements Listener {
 		final Location loc = player.getLocation();
 
 		if (e.getBlock().getType() == Config.TP_BLOCK_TYPE) {
-			if (!GPHandler.haveBuildTrust(player, loc, e.getBlock().getType())) {
-				return;
-			}
-			if (!WGHandler.haveTrustTP(player)) {
-				return;
-			}
-			if (!GDHandler.haveBuildTrust(player, loc)) {
-				return;
-			}
+			if (HookManager.isGriefPreventionLoaded() && !GPHandler.haveBuildTrust(player, loc)) return;
+			if (HookManager.isWorldGuardLoaded() && !WGHandler.haveTrustTP(player)) return;
+			if (HookManager.isGriefDefenderLoaded() && !GDHandler.haveBuildTrust(player, loc)) return;
 
 			final String tpName = TeleporterData.getTeleporter(e.getBlock().getLocation());
 
-			if (tpName == null) {
-				return;
-			}
-
+			if (tpName == null) return;
 			TeleporterData.deleteTeleporter(tpName);
 		}
 	}
@@ -56,23 +47,28 @@ public class TeleporterListener implements Listener {
 	public void onPlayerTeleport(PlayerToggleSneakEvent e) {
 		if (!e.getPlayer().isSneaking()) {
 			if (Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.TP_BLOCK_TYPE)) {
-				if (e.getPlayer().hasPermission("elevator.teleporter.use")) {
+				if (e.getPlayer().hasPermission(Permissions.TP_USE)) {
 					final double locX = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation()).getX();
-					final double locY = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation().add(0.0D, -1.0D, 0.0D)).getY();
+					final double locY = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation().subtract(0.0, 1.0, 0.0)).getY();
 					final double locZ = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation()).getZ();
 					final World world = e.getPlayer().getLocation().getWorld();
 
 					final Location loc = new Location(world, locX, locY, locZ);
 
 					final String tpName = TeleporterData.getTeleporter(loc);
-					final Location locTo = TeleporterData.getTeleportLoc(tpName);
+					final Location destination = TeleporterData.getTeleportLoc(tpName);
+					if (destination == null) return;
 
-					if (locTo == null) {
+					final Location blockLoc = destination.clone().subtract(0.0, 1.0, 0.0);
+					final Material material = blockLoc.getBlock().getType();
+
+					if (material != Config.TP_BLOCK_TYPE) {
+						TeleporterData.deleteTeleporter(tpName);
 						return;
 					}
 
 					if (!(tpName == null)) {
-						if (Mechanics.dangerBlock(locTo)) {
+						if (Mechanics.dangerBlock(destination)) {
 							MessageHandler.sendMessage(e.getPlayer(), Config.TP_LOCALE_DANGER);
 							return;
 						} else if (Config.COOLDOWN_ENABLED) {
