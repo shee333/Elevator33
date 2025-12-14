@@ -20,7 +20,7 @@ public class ElevatorListener implements Listener {
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) return;
-		if (e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
+		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
 			if (!Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.ELEVATOR_BLOCK_TYPE)) return;
 			final Location tpLocation = Mechanics.getElevatorLocationUp(e.getPlayer());
 
