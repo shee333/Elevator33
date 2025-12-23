@@ -311,9 +311,9 @@ public class TeleporterData {
 			}
 
 			if (link == null) {
-				MessageHandler.sendMessage(player, "&6" + tp + " &eX:&6" + locX + " &eY:&6" + locY + " &eZ:&6" + locZ + " &ein world &6" + world);
+				MessageHandler.sendMessage(player, "<gold>" + tp + " <yellow>X:<gold>" + locX + " <yellow>Y:<gold>" + locY + " <yellow>Z:<gold>" + locZ + " <yellow>in world <gold>" + world);
 			} else {
-				MessageHandler.sendMessage(player, "&6" + tp + " &eX:&6" + locX + " &eY:&6" + locY + " &eZ:&6" + locZ + " &ein world &6" + world + " &e==> &6" + link);
+				MessageHandler.sendMessage(player, "<gold>" + tp + " <yellow>X:<gold>" + locX + " <yellow>Y:<gold>" + locY + " <yellow>Z:<gold>" + locZ + " <yellow>in world <gold>" + world + " <yellow>==> <gold>" + link);
 			}
 
 		}

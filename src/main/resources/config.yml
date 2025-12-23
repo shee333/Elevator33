@@ -6,11 +6,13 @@ Elevator:
   ParticleCount: 20
   UsageSound: entity.enderman.teleport
   ActivateSound: entity.player.levelup
+  AllowUnsafe: false
 Teleporter:
   BlockType: SEA_LANTERN
   EnableParticle: true
   UsageSound: entity.enderman.teleport
   WarmupTime: 3
+  AllowUnsafe: false
 Hooks:
   GriefPrevention: true
   GriefDefender: true
@@ -18,40 +20,41 @@ Hooks:
 Cooldown:
   EnableCooldown: false
   Time: 30
-  Locale: '&cElevator is on cooldown. Please wait for another %time% seconds!'
+  Locale: '<red>Elevator is on cooldown. Please wait for another %time% seconds!'
 ElevatorLocale:
-  ElevatorUp: '&aGoing up'
-  ElevatorDown: '&aGoing down'
-  ElevatorDanger: '&4Danger! You cannot use the elevator to this location. You might die!'
-  ElevatorActivated: '&aThe elevator is active'
+  ElevatorUp: '<green>Going up'
+  ElevatorDown: '<green>Going down'
+  ElevatorDanger: '<red>Danger! You cannot use the elevator to this location. You might die!'
+  ElevatorActivated: '<green>The elevator is active'
 TeleporterLocale:
-  Danger: '&cDanger! The location is not safe!'
-  LinkSelf: '&cYou can''t link to the same teleporter.'
-  Cancelled: '&cTeleportation cancelled!'
-  Initialized: '&bTeleportation initialized'
-  Warmup: '&bPlease wait &9%time% &bseconds while the teleporter initialize! Don''t move!'
-  UnvalidBlock: '&cNot a valid teleporter block detected!'
-  Exist: '&cThis teleporter already exist!'
-  Unexist: '&cOne or more teleporters does not exist. Check for spelling errors.'
-  Added: '&eTeleporter has been added as &6%tpname%'
-  LinkExist: '&cOne or more teleporters are already linked.'
-  NoOwner: '&cYou are not allowed to link those teleporters.'
-  Linked: '&eYou have successfully linked teleporter &6%teleport1% &ewith &6%teleport2%'
-  Removed: '&eTeleporter &6%tpname% &ehas been removed'
-  Unlinked: '&6%teleport1% &ehas successfully unlinked with &6%teleport2%'
-  NoDestination: '&c%tpname% has no destination!'
-  ListHeader: '&e---- ====== [ &6Your teleporters &e] ====== ----'
-  ListNoTeleporters: '&cYou don''t have any teleporters yet'
-  SpecifyTeleporter: '&cPlease specify a teleporter!'
-  SpecifyMoreTeleporter: '&cPlease specify at least two teleporters!'
-  PermissionBlocks: '&cYou dont have permission to set more teleporters!'
-  HelpHeader: '&e---- ====== [ &6Teleporters &e] ====== ----'
-  HelpAdd: '&6/teleporter add &f- &eSet teleportation block'
-  HelpHelp: '&6/teleporter help &f- &eThis help page'
-  HelpLink: '&6/teleporter link &f[tpblock1] [tpblock2] - &eLink two teleportation blocks togheter'
-  HelpList: '&6/teleporter list &f- &eGet a list of all your teleporters'
-  HelpRemove: '&6/teleporter remove &f- &eRemove a teleportation block'
-  HelpUnlink: '&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.'
+  Danger: '<red>Danger! The location is not safe!'
+  LinkSelf: '<red>You can''t link to the same teleporter.'
+  Cancelled: '<red>Teleportation cancelled!'
+  Initialized: '<aqua>Teleportation initialized'
+  Warmup: '<aqua>Please wait <blue>%time% <aqua>seconds while the teleporter initializes! Don''t move!'
+  UnvalidBlock: '<red>Not a valid teleporter block detected!'
+  Exist: '<red>This teleporter already exists!'
+  Unexist: '<red>One or more teleporters do not exist. Check for spelling errors.'
+  Added: '<yellow>Teleporter has been added as <gold>%tpname%'
+  LinkExist: '<red>One or more teleporters are already linked.'
+  NoOwner: '<red>You are not allowed to link those teleporters.'
+  Linked: '<yellow>You have successfully linked teleporter <gold>%teleport1% <yellow>with <gold>%teleport2%'
+  Removed: '<yellow>Teleporter <gold>%tpname% <yellow>has been removed'
+  Unlinked: '<gold>%teleport1% <yellow>has successfully unlinked with <gold>%teleport2%'
+  NoDestination: '<red>%tpname% has no destination!'
+  ListHeader: '<yellow>---- ====== [ <gold>Your teleporters <yellow>] ====== ----'
+  ListNoTeleporters: '<red>You don''t have any teleporters yet'
+  SpecifyTeleporter: '<red>Please specify a teleporter!'
+  SpecifyMoreTeleporter: '<red>Please specify at least two teleporters!'
+  PermissionBlocks: '<red>You don''t have permission to set more teleporters!'
+  HelpHeader: '<yellow>---- ====== [ <gold>Teleporters <yellow>] ====== ----'
+  HelpAdd: '<gold>/teleporter add <gray>- <yellow>Set teleportation block'
+  HelpHelp: '<gold>/teleporter help <gray>- <yellow>This help page'
+  HelpLink: '<gold>/teleporter link <gray>[tpblock1] [tpblock2] <yellow>- Link two teleportation blocks together'
+  HelpList: '<gold>/teleporter list <gray>- <yellow>Get a list of all your teleporters'
+  HelpRemove: '<gold>/teleporter remove <gray>- <yellow>Remove a teleportation block'
+  HelpUnlink: '<gold>/teleporter unlink <gray>[tpblock1] <yellow>- Unlink two teleportation blocks. Only need to specify one.'
 MiscellaneousLocale:
-  Permission: '&cSorry, but you do not have permissions to do that.'
-
+  Permission: '<red>Sorry, but you do not have permissions to do that.'
+  WorldguardPermission: '<red><bold>Hey! <gray>Sorry, but you can''t use that elevator here.'
+  GDPremission: '<red>You do not have accesstrust in this claim.'

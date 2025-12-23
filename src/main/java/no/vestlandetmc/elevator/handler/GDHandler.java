@@ -6,6 +6,7 @@ import com.griefdefender.api.claim.Claim;
 import com.griefdefender.api.claim.TrustTypes;
 import com.griefdefender.lib.flowpowered.math.vector.Vector3i;
 import no.vestlandetmc.elevator.ElevatorPlugin;
+import no.vestlandetmc.elevator.config.Config;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,7 +25,7 @@ public class GDHandler {
 
 		if (claim.getUserTrusts(TrustTypes.ACCESSOR).contains(player.getUniqueId())) {
 			if (!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
-				MessageHandler.sendMessage(player, "&cYou do not have accesstrust in this claim.");
+				MessageHandler.sendMessage(player, Config.GD_LOCALE_PERMISSION);
 				MessageHandler.spamMessageClaim.add(player.getUniqueId().toString());
 
 				new BukkitRunnable() {

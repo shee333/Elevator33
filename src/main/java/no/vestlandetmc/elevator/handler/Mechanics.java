@@ -18,7 +18,7 @@ public class Mechanics {
 		for (double y = 2; y <= distance; y++) {
 			final Block block = player.getWorld().getBlockAt(player.getLocation().add(0.0D, y, 0.0D));
 			if (block.getType() == Config.ELEVATOR_BLOCK_TYPE) {
-				if (dangerBlock(block.getLocation())) {
+				if (dangerBlock(block.getLocation()) && !Config.ELEVATOR_ALLOWUNSAFE) {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return null;
 				} else {

@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import no.vestlandetmc.elevator.ElevatorPlugin;
+import no.vestlandetmc.elevator.config.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,7 +40,7 @@ public class WGHandler {
 
 	private static void sendErrorMessage(Player player) {
 		if (!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
-			MessageHandler.sendMessage(player, "&c&lHey! &7Sorry, but you can't use that elevator here.");
+			MessageHandler.sendMessage(player, Config.WG_LOCALE_PERMISSION);
 			MessageHandler.spamMessageClaim.add(player.getUniqueId().toString());
 
 			new BukkitRunnable() {

@@ -4,6 +4,7 @@ import lombok.Setter;
 import no.vestlandetmc.elevator.ElevatorPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jspecify.annotations.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class ConfigHandler extends YamlConfiguration {
 	}
 
 	@Override
-	public Object get(String path, Object def) {
+	public Object get(@NonNull String path, Object def) {
 		if (defaults != null) {
 
 			if (def != null && !def.getClass().isPrimitive() && !PrimitiveWrapper.isWrapperType(def.getClass()))
@@ -94,7 +95,7 @@ public class ConfigHandler extends YamlConfiguration {
 	}
 
 	@Override
-	public void set(String path, Object value) {
+	public void set(@NonNull String path, Object value) {
 		final String m = new Throwable().getStackTrace()[1].getMethodName();
 
 		if (defaults == null && pathPrefix != null && !m.equals("getConfigurationSection") && !m.equals("get"))
@@ -142,6 +143,16 @@ public class ConfigHandler extends YamlConfiguration {
 		}
 
 		return destination;
+	}
+
+	public void removeOutdatedKeys(Set<String> validKeys) {
+		for (String key : getKeys(true)) {
+			if (!validKeys.contains(key)) {
+				set(key, null);
+			}
+		}
+
+		saveConfig();
 	}
 
 	private static final class PrimitiveWrapper {

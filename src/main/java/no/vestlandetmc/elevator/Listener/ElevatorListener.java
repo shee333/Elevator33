@@ -118,11 +118,11 @@ public class ElevatorListener implements Listener {
 
 		if (player.isOp()) {
 			if (UpdateNotification.isUpdateAvailable()) {
-				MessageHandler.sendMessage(player, "&a------------------------------------");
-				MessageHandler.sendMessage(player, "&aElevator is outdated. Update is available!");
-				MessageHandler.sendMessage(player, "&aYour version is &a&l " + UpdateNotification.getCurrentVersion() + " &aand can be updated to version &a&l" + UpdateNotification.getLatestVersion());
-				MessageHandler.sendMessage(player, "&aGet the new update at https://modrinth.com/plugin/" + UpdateNotification.getProjectSlug());
-				MessageHandler.sendMessage(player, "&a------------------------------------");
+				MessageHandler.sendMessage(player, "<green>------------------------------------");
+				MessageHandler.sendMessage(player, "<green>Elevator is outdated. Update is available!");
+				MessageHandler.sendMessage(player, "<green>Your version is <bold> " + UpdateNotification.getCurrentVersion() + "</bold> and can be updated to version <bold>" + UpdateNotification.getLatestVersion());
+				MessageHandler.sendMessage(player, "<green>Get the new update at https://modrinth.com/plugin/" + UpdateNotification.getProjectSlug());
+				MessageHandler.sendMessage(player, "<green>------------------------------------");
 			}
 		}
 	}

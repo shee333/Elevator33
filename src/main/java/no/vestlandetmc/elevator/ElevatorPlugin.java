@@ -32,17 +32,17 @@ public class ElevatorPlugin extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 
-		MessageHandler.sendConsole("&b___________ __                       __                ");
-		MessageHandler.sendConsole("&b\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
-		MessageHandler.sendConsole("&b |    __)_ |  | _/ __ \\  \\/ /\\__  \\\\   __\\/  _ \\_  __ \\");
-		MessageHandler.sendConsole("&b |        \\|  |_\\  ___/\\   /  / __ \\|  | (  <_> )  | \\/");
-		MessageHandler.sendConsole("&b/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
-		MessageHandler.sendConsole("&b        \\/           \\/           \\/                   ");
+		MessageHandler.sendConsole("<aqua>___________ __                       __                ");
+		MessageHandler.sendConsole("<aqua>\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
+		MessageHandler.sendConsole("<aqua> |    __)_ |  | _/ __ \\  \\/ /\\__  \\\\   __\\/  _ \\_  __ \\");
+		MessageHandler.sendConsole("<aqua> |        \\|  |_\\  ___/\\   /  / __ \\|  | (  <_> )  | \\/");
+		MessageHandler.sendConsole("<aqua>/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
+		MessageHandler.sendConsole("<aqua>        \\/           \\/           \\/                   ");
 		MessageHandler.sendConsole("");
-		MessageHandler.sendConsole("&bElevator v" + getPluginMeta().getVersion());
-		MessageHandler.sendConsole("&bRunning on " + getServer().getName());
-		MessageHandler.sendConsole("&bAuthor: Baktus_79");
-		MessageHandler.sendConsole("&8&n_______________________________________________________");
+		MessageHandler.sendConsole("<aqua>Elevator v" + getPluginMeta().getVersion());
+		MessageHandler.sendConsole("<aqua>Running on " + getServer().getName());
+		MessageHandler.sendConsole("<aqua>Author: Baktus_79");
+		MessageHandler.sendConsole("<dark_gray><u>_______________________________________________________");
 		MessageHandler.sendConsole("");
 
 		Config.initialize();
@@ -51,7 +51,7 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		TeleporterData.createSection();
 		HookManager.initialize();
-		MessageHandler.sendConsole("&8&n_______________________________________________________");
+		MessageHandler.sendConsole("<dark_gray><u>_______________________________________________________");
 
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
 		this.getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
@@ -72,10 +72,10 @@ public class ElevatorPlugin extends JavaPlugin {
 
 			@Override
 			public void onUpdateAvailable() {
-				MessageHandler.sendConsole("&7-----------------------");
-				MessageHandler.sendConsole("&7[Elevator] Version " + getLatestVersion() + " is now available!");
-				MessageHandler.sendConsole("&7[Elevator] Download the update at https://modrinth.com/plugin/" + getProjectSlug());
-				MessageHandler.sendConsole("&7-----------------------");
+				MessageHandler.sendConsole("<red>-----------------------");
+				MessageHandler.sendConsole("<red>[Elevator] Version " + getLatestVersion() + " is now available!");
+				MessageHandler.sendConsole("<red>[Elevator] Download the update at https://modrinth.com/plugin/" + getProjectSlug());
+				MessageHandler.sendConsole("<red>-----------------------");
 			}
 		}.runTaskAsynchronously(this);
 

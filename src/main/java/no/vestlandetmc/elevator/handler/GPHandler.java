@@ -24,7 +24,7 @@ public class GPHandler {
 		final @Nullable Supplier<String> accessDenied = claim.checkPermission(player, ClaimPermission.Access, null);
 		if (accessDenied != null) {
 			if (!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
-				MessageHandler.sendMessage(player, "&c" + accessDenied);
+				MessageHandler.sendMessage(player, "<red>" + accessDenied);
 				MessageHandler.spamMessageClaim.add(player.getUniqueId().toString());
 
 				new BukkitRunnable() {

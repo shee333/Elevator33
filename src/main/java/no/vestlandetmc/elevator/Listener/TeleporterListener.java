@@ -67,29 +67,29 @@ public class TeleporterListener implements Listener {
 						return;
 					}
 
-					if (!(tpName == null)) {
-						if (Mechanics.dangerBlock(destination)) {
-							MessageHandler.sendMessage(e.getPlayer(), Config.TP_LOCALE_DANGER);
+					if (tpName == null) return;
+
+					if (Mechanics.dangerBlock(destination) && !Config.TP_ALLOWUNSAFE) {
+						MessageHandler.sendMessage(e.getPlayer(), Config.TP_LOCALE_DANGER);
+						return;
+					} else if (Config.COOLDOWN_ENABLED) {
+						if (Cooldown.elevatorUsed(e.getPlayer())) {
 							return;
-						} else if (Config.COOLDOWN_ENABLED) {
-							if (Cooldown.elevatorUsed(e.getPlayer())) {
-								return;
-							}
 						}
+					}
 
-						if (HookManager.isGriefPreventionLoaded() && Config.GRIEFPREVENTION_HOOK) {
-							if (!GPHandler.haveTrust(e.getPlayer())) return;
-						}
-						if (HookManager.isWorldGuardLoaded() && Config.WORLDGUARD_HOOK) {
-							if (!WGHandler.haveTrust(e.getPlayer())) return;
-						}
-						if (HookManager.isGriefDefenderLoaded() && Config.GRIEFDEFENDER_HOOK) {
-							if (!GDHandler.haveTrust(e.getPlayer())) return;
-						}
+					if (HookManager.isGriefPreventionLoaded() && Config.GRIEFPREVENTION_HOOK) {
+						if (!GPHandler.haveTrust(e.getPlayer())) return;
+					}
+					if (HookManager.isWorldGuardLoaded() && Config.WORLDGUARD_HOOK) {
+						if (!WGHandler.haveTrust(e.getPlayer())) return;
+					}
+					if (HookManager.isGriefDefenderLoaded() && Config.GRIEFDEFENDER_HOOK) {
+						if (!GDHandler.haveTrust(e.getPlayer())) return;
+					}
 
-						if (TeleporterData.getTeleportLoc(tpName) != null) {
-							TeleporterData.teleporterUsed(e.getPlayer(), tpName);
-						}
+					if (TeleporterData.getTeleportLoc(tpName) != null) {
+						TeleporterData.teleporterUsed(e.getPlayer(), tpName);
 					}
 				}
 			}

@@ -33,7 +33,7 @@ public class HookManager {
 					case "WorldGuard" -> worldGuardLoaded = true;
 				}
 
-				MessageHandler.sendConsole("&7Successfully hooked into &b" + hook);
+				MessageHandler.sendConsole("<gray>Successfully hooked into <aqua>" + hook);
 			}
 		}
 	}

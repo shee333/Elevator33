@@ -4,11 +4,9 @@ import no.vestlandetmc.elevator.handler.MessageHandler;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 
-public class Config extends ConfigHandler {
+import java.util.Set;
 
-	private Config(String fileName) {
-		super(fileName);
-	}
+public class Config extends ConfigHandler {
 
 	public static Material
 			ELEVATOR_BLOCK_TYPE,
@@ -53,7 +51,9 @@ public class Config extends ConfigHandler {
 			TP_LOCALE_HELPLIST,
 			TP_LOCALE_HELPREMOVE,
 			TP_LOCALE_HELPUNLINK,
-			ML_LOCALE_PERMISSION;
+			ML_LOCALE_PERMISSION,
+			WG_LOCALE_PERMISSION,
+			GD_LOCALE_PERMISSION;
 
 	public static int
 			PARTICLE_COUNT,
@@ -68,7 +68,84 @@ public class Config extends ConfigHandler {
 			GRIEFDEFENDER_HOOK,
 			COOLDOWN_ENABLED,
 			TP_PARTICLE_ENABLE,
-			TP_WARMUP_ENABLE;
+			TP_WARMUP_ENABLE,
+			ELEVATOR_ALLOWUNSAFE,
+			TP_ALLOWUNSAFE;
+
+	private Config(String fileName) {
+		super(fileName);
+	}
+
+	public static void initialize() {
+		Config config = new Config("config.yml");
+
+		Set<String> validKeys = Set.of(
+				"Elevator",
+				"ElevatorLocale",
+				"Hooks",
+				"Cooldown",
+				"Teleporter",
+				"TeleporterLocale",
+				"MiscellaneousLocale",
+				"Elevator.BlockType",
+				"Elevator.ParticleType",
+				"Elevator.EnableParticle",
+				"Elevator.ParticleCount",
+				"Elevator.UsageSound",
+				"Elevator.AllowUnsafe",
+				"Elevator.ActivateSound",
+				"ElevatorLocale.ElevatorUp",
+				"ElevatorLocale.ElevatorDown",
+				"ElevatorLocale.ElevatorDanger",
+				"ElevatorLocale.ElevatorActivated",
+				"Hooks.GriefPrevention",
+				"Hooks.GriefDefender",
+				"Hooks.WorldGuard",
+				"Cooldown.EnableCooldown",
+				"Cooldown.Time",
+				"Cooldown.Locale",
+				"Teleporter.WarmupEnable",
+				"Teleporter.WarmupTime",
+				"Teleporter.BlockType",
+				"Teleporter.UsageSound",
+				"Teleporter.EnableParticle",
+				"Teleporter.AllowUnsafe",
+				"TeleporterLocale.Danger",
+				"TeleporterLocale.Cancelled",
+				"TeleporterLocale.Initialized",
+				"TeleporterLocale.Warmup",
+				"TeleporterLocale.UnvalidBlock",
+				"TeleporterLocale.Exist",
+				"TeleporterLocale.Unexist",
+				"TeleporterLocale.Added",
+				"TeleporterLocale.LinkExist",
+				"TeleporterLocale.NoOwner",
+				"TeleporterLocale.Linked",
+				"TeleporterLocale.Removed",
+				"TeleporterLocale.Unlinked",
+				"TeleporterLocale.NoDestination",
+				"TeleporterLocale.ListHeader",
+				"TeleporterLocale.ListNoTeleporters",
+				"TeleporterLocale.SpecifyTeleporter",
+				"TeleporterLocale.SpecifyMoreTeleporter",
+				"TeleporterLocale.PermissionBlocks",
+				"TeleporterLocale.HelpHeader",
+				"TeleporterLocale.HelpAdd",
+				"TeleporterLocale.HelpHelp",
+				"TeleporterLocale.HelpLink",
+				"TeleporterLocale.HelpList",
+				"TeleporterLocale.HelpRemove",
+				"TeleporterLocale.HelpUnlink",
+				"TeleporterLocale.LinkSelf",
+				"MiscellaneousLocale.Permission",
+				"Elevator.BlockDistance",
+				"MiscellaneousLocale.WorldguardPermission",
+				"MiscellaneousLocale.GDPremission"
+		);
+
+		config.removeOutdatedKeys(validKeys);
+		config.onLoad();
+	}
 
 	private void onLoad() {
 
@@ -80,6 +157,7 @@ public class Config extends ConfigHandler {
 		ELEVATOR_LOCALE_DANGER = getString("ElevatorLocale.ElevatorDanger");
 		ELEVATOR_LOCALE_ACTIVATED = getString("ElevatorLocale.ElevatorActivated");
 		ELEVATOR_SOUND = getString("Elevator.UsageSound");
+		ELEVATOR_ALLOWUNSAFE = getBoolean("Elevator.AllowUnsafe");
 		SOUND_ACTIVATED = getString("Elevator.ActivateSound");
 		PARTICLE_COUNT = getInt("Elevator.ParticleCount");
 		GRIEFPREVENTION_HOOK = getBoolean("Hooks.GriefPrevention");
@@ -93,6 +171,7 @@ public class Config extends ConfigHandler {
 		TP_BLOCK_TYPE = Material.matchMaterial(getString("Teleporter.BlockType").toUpperCase());
 		TP_SOUND = getString("Teleporter.UsageSound");
 		TP_PARTICLE_ENABLE = getBoolean("Teleporter.EnableParticle");
+		TP_ALLOWUNSAFE = getBoolean("Teleporter.AllowUnsafe");
 		TP_LOCALE_DANGER = getString("TeleporterLocale.Danger");
 		TP_LOCALE_CANCELLED = getString("TeleporterLocale.Cancelled");
 		TP_LOCALE_INIT = getString("TeleporterLocale.Initialized");
@@ -121,33 +200,31 @@ public class Config extends ConfigHandler {
 		TP_LOCALE_HELPUNLINK = getString("TeleporterLocale.HelpUnlink");
 		TP_LOCALE_LINKSELF = getString("TeleporterLocale.LinkSelf");
 		ML_LOCALE_PERMISSION = getString("MiscellaneousLocale.Permission");
+		WG_LOCALE_PERMISSION = getString("MiscellaneousLocale.WorldguardPermission");
+		GD_LOCALE_PERMISSION = getString("MiscellaneousLocale.GDPremission");
 		BLOCK_DISTANCE = getInt("Elevator.BlockDistance");
 
 		sendInfo();
 	}
 
-	public static void initialize() {
-		new Config("config.yml").onLoad();
-	}
-
 	private void sendInfo() {
 		if (PARTICLE_ENABLED) {
-			MessageHandler.sendConsole("&bEnabling &7particles for elevators");
-			MessageHandler.sendConsole("&bUsing " + PARTICLE_TYPE.toString().replace("_", " ") + " &7as particle for elevators");
+			MessageHandler.sendConsole("<aqua>Enabling <gray>particles for elevators");
+			MessageHandler.sendConsole("<aqua>Using " + PARTICLE_TYPE.toString().replace("_", " ") + " <gray>as particle for elevators");
 		} else {
-			MessageHandler.sendConsole("&cDisabling &7particles for elevators");
+			MessageHandler.sendConsole("<red>Disabling <gray>particles for elevators");
 		}
 
 		if (TP_PARTICLE_ENABLE) {
-			MessageHandler.sendConsole("&bEnabling &7particles for teleporters");
+			MessageHandler.sendConsole("<aqua>Enabling <gray>particles for teleporters");
 		} else {
-			MessageHandler.sendConsole("&cDisabling &7particles for teleporters");
+			MessageHandler.sendConsole("<red>Disabling <gray>particles for teleporters");
 		}
 
-		MessageHandler.sendConsole("&bUsing " + ELEVATOR_BLOCK_TYPE.name().replace("_", " ") + " &7as elevator block");
-		MessageHandler.sendConsole("&bUsing " + TP_BLOCK_TYPE.name().replace("_", " ") + " &7as teleporter block");
-		MessageHandler.sendConsole("&bUsing &7the sound &b" + SOUND_ACTIVATED + " &7on activate elevator");
-		MessageHandler.sendConsole("&bUsing &7the sound &b" + ELEVATOR_SOUND + " &7when using elevator");
-		MessageHandler.sendConsole("&bUsing &7the sound &b" + TP_SOUND + " &7when using teleporters");
+		MessageHandler.sendConsole("<aqua>Using " + ELEVATOR_BLOCK_TYPE.name().replace("_", " ") + " <gray>as elevator block");
+		MessageHandler.sendConsole("<aqua>Using " + TP_BLOCK_TYPE.name().replace("_", " ") + " <gray>as teleporter block");
+		MessageHandler.sendConsole("<aqua>Using <gray>the sound <aqua>" + SOUND_ACTIVATED + " <gray>on activate elevator");
+		MessageHandler.sendConsole("<aqua>Using <gray>the sound <aqua>" + ELEVATOR_SOUND + " <gray>when using elevator");
+		MessageHandler.sendConsole("<aqua>Using <gray>the sound <aqua>" + TP_SOUND + " <gray>when using teleporters");
 	}
 }

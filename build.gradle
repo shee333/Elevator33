@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'no.vestlandetmc'
-version = '3.1.1'
+version = '3.1.2'
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ dependencies {
 }
 
 shadowJar {
-    relocate 'org.bstats', 'no.vestlandetmc.elevator.bstats'
+    relocate 'org.bstats', 'no.vestlandetmc.elevator.shaded.bstats'
     archiveFileName.set('Elevator.jar')
 }
 
