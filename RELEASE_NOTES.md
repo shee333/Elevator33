@@ -1,4 +1,4 @@
-# Elevator v3.1.3 Release Notes
+# Elevator v3.1.3
 
 ## Fixes
 - Fixed a startup crash in Minecraft 1.21+ caused by particle name changes (SPELL_WITCH -> WITCH).
