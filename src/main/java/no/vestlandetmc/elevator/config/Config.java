@@ -150,7 +150,18 @@ public class Config extends ConfigHandler {
 	private void onLoad() {
 
 		ELEVATOR_BLOCK_TYPE = Material.matchMaterial(getString("Elevator.BlockType").toUpperCase());
-		PARTICLE_TYPE = Particle.valueOf(getString("Elevator.ParticleType").toUpperCase());
+		try {
+			PARTICLE_TYPE = Particle.valueOf(getString("Elevator.ParticleType").toUpperCase());
+		} catch (IllegalArgumentException e) {
+			final String particleName = getString("Elevator.ParticleType").toUpperCase();
+			if (particleName.equals("SPELL_WITCH")) {
+				PARTICLE_TYPE = Particle.WITCH;
+				MessageHandler.sendConsole("<yellow>Config: 'SPELL_WITCH' is deprecated, using 'WITCH' instead.");
+			} else {
+				MessageHandler.sendConsole("<red>Invalid particle type: " + particleName + ". Defaulting to WITCH.");
+				PARTICLE_TYPE = Particle.WITCH;
+			}
+		}
 		PARTICLE_ENABLED = getBoolean("Elevator.EnableParticle");
 		ELEVATOR_LOCALE_UP = getString("ElevatorLocale.ElevatorUp");
 		ELEVATOR_LOCALE_DOWN = getString("ElevatorLocale.ElevatorDown");
